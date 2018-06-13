@@ -47,7 +47,13 @@ class LoginController extends Controller
      */
     public function redirectToProvider($provider)
     {
-        return Socialite::driver($provider)->redirect();
+        return Socialite::driver($provider)
+                          ->scopes(config('google.scopes'))
+                          ->with([
+                              'access_type'     => config('google.access_type'),
+                              'approval_prompt' => config('google.approval_prompt'),
+                          ])
+                          ->redirect();
     }
 
     /**
@@ -57,10 +63,10 @@ class LoginController extends Controller
      */
     public function handleProviderCallback($provider)
     {
-        $user = Socialite::driver($provider)->stateless()->user();
+        $user = Socialite::driver($provider)->user();
         $authUser = $this->findOrCreateUser($user, $provider);
         Auth::login($authUser, true);
-        return redirect($this->redirectTo);
+        return redirect()->route('home');
     }
 
     public function findOrCreateUser($user, $provider)
@@ -75,6 +81,9 @@ class LoginController extends Controller
           'email' => $user->email,
           'provider' => strtoupper($provider),
           'provider_id' => $user->id,
+          'access_token'  => $user->token,
+          'refresh_token' => $user->refreshToken,
+          'avatar' => $user->avatar,
         ]);
     }
 

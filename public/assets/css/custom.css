@@ -1,0 +1,19 @@
+.sidebar {
+  /* background-image: url("../../assets/images/dashboard/circle.svg"), linear-gradient(to top, #f6e384, #ffd500); /* W3C */
+  background: linear-gradient(to top, #f6e384, #ffd500);
+
+}
+
+.navbar.default-layout-navbar .navbar-brand-wrapper{
+  background: #ffd500;
+}
+
+
+@media (max-width: 991px){
+
+  .navbar.default-layout-navbar .navbar-brand-wrapper{
+    background: white;
+    margin-left: 20px;
+  }
+
+}
