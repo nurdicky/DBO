@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Driver;
 use Illuminate\Http\Request;
 
 class DriverController extends Controller
@@ -13,7 +14,8 @@ class DriverController extends Controller
      */
     public function index()
     {
-        return view('drivers.list');
+        $drivers = Driver::all();
+        return view('drivers.list', ['drivers' => $drivers]);
     }
 
     /**
@@ -23,7 +25,7 @@ class DriverController extends Controller
      */
     public function create()
     {
-        //
+        return view('drivers.create');
     }
 
     /**
@@ -34,7 +36,8 @@ class DriverController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $drivers = Driver::create($request->all());
+        return redirect()->route('driver.index')->with('alert-success','Berhasil Menambahkan Data!');
     }
 
     /**
@@ -56,7 +59,8 @@ class DriverController extends Controller
      */
     public function edit($id)
     {
-        //
+        $drivers = Driver::find($id);
+        return view('drivers.edit', ['drivers' => $drivers]);
     }
 
     /**
@@ -68,7 +72,14 @@ class DriverController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $drivers = Driver::find($id);
+        $drivers->driver_name = $request->driver_name;
+        $drivers->driver_identity_number = $request->driver_identity_number;
+        $drivers->driver_address = $request->driver_address;
+        $drivers->driver_rute = $request->driver_rute;
+        $drivers->save();
+
+        return redirect()->route('driver.index')->with('alert-success','Berhasil Memperbarui Data!');
     }
 
     /**
@@ -79,6 +90,7 @@ class DriverController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Driver::destroy($id);
+        return redirect()->route('driver.index')->with('alert-success','Berhasil Menghapus Data!');
     }
 }

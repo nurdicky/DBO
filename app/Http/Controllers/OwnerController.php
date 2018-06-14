@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Owner;
 use Illuminate\Http\Request;
 
 class OwnerController extends Controller
@@ -13,7 +14,8 @@ class OwnerController extends Controller
      */
     public function index()
     {
-        return view('owners.list');
+        $owners = Owner::all();
+        return view('owners.list', ['owners' => $owners]);
     }
 
     /**
@@ -23,7 +25,7 @@ class OwnerController extends Controller
      */
     public function create()
     {
-        //
+        return view('owners.create');
     }
 
     /**
@@ -34,7 +36,15 @@ class OwnerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $host = request()->getHttpHost();
+        $input = $request->file('owner_avatar');
+        $input = $request->all();
+
+        $input['owner_avatar'] = 'http://'.$host.'/images/'.$request->owner_avatar->getClientOriginalName();
+        $request->owner_avatar->move(public_path('images'), $input['owner_avatar']);
+
+        $owners = Owner::create($input);
+        return redirect()->route('owner.index')->with('alert-success','Berhasil Menambahkan Data!');
     }
 
     /**
@@ -56,7 +66,8 @@ class OwnerController extends Controller
      */
     public function edit($id)
     {
-        //
+        $owners = Owner::find($id);
+        return view('owners.edit', ['owners' => $owners]);
     }
 
     /**
@@ -68,7 +79,26 @@ class OwnerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $host = request()->getHttpHost();
+        $owners = Owner::find($id);
+        if ($request->hasFile('owner_avatar')) {
+            $input = $request->file('owner_avatar');
+            $input = $request->all();
+            $input['owner_avatar'] = 'http://'.$host.'/images/'.$request->owner_avatar->getClientOriginalName();
+            $request->owner_avatar->move(public_path('images'), $input['owner_avatar']);
+        }
+        else{
+            $input = $request->all();
+            $input['owner_avatar'] = $owners->owner_avatar;
+        }
+        
+        $owners->owner_name = $input['owner_name'];
+        $owners->owner_address = $input['owner_address'];
+        $owners->owner_identity_number = $input['owner_identity_number'];
+        $owners->owner_avatar = $input['owner_avatar'];
+        $owners->save();
+
+        return redirect()->route('owner.index')->with('alert-success','Berhasil Memperbarui Data!');
     }
 
     /**
@@ -79,6 +109,7 @@ class OwnerController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Owner::destroy($id);
+        return redirect()->route('owner.index')->with('alert-success','Berhasil Menghapus Data!');
     }
 }

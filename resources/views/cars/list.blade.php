@@ -44,30 +44,36 @@
             </tr>
           </thead>
           <tbody>
-            <?php $index=1; ?>
-            @foreach($cars as $car)
+              @if(count($cars) == 0)
               <tr>
-                <td>{{ $index++ }}</td>
-                <td class="py-1">
-                  <img src="{{ $car->car_image }}" alt="image"/>
-                </td>
-                <td>{{ $car->car_type }}</td>
-                <td>{{ $car->car_plat_number }}</td>
-                <td>{{ $car->car_frame_number }}</td>
-                <td>{{ $car->car_machine_number }}</td>
-                <td>{{ $car->car_rute }}</td>
-                <td>{{ $car->owners->owner_name }}</td>
-                <td>{{ $car->driver_id }}</td>
-                <td>
-                  <form action="{{ route('car.destroy', $car->id) }}" method="post">
-                    {{ csrf_field() }}
-                    {{ method_field('DELETE') }}
-                    <a class="btn btn-sm btn-info" href="{{ route('car.edit', $car->id) }}">Edit</a>
-                    <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('Yakin ingin menghapus data?')">Delete</button>
-                  </form>
-                </td>
+                <td colspan="10">Data Masih Kosong</td>
               </tr>
-            @endforeach
+            @else
+              <?php $index=1; ?>
+              @foreach($cars as $car)
+                <tr>
+                  <td>{{ $index++ }}</td>
+                  <td class="py-1">
+                    <img src="{{ $car->car_image }}" alt="image"/>
+                  </td>
+                  <td>{{ $car->car_type }}</td>
+                  <td>{{ $car->car_plat_number }}</td>
+                  <td>{{ $car->car_frame_number }}</td>
+                  <td>{{ $car->car_machine_number }}</td>
+                  <td>{{ $car->car_rute }}</td>
+                  <td>{{ $car->owners->owner_name }}</td>
+                  <td>{{ $car->driver_id }}</td>
+                  <td>
+                    <form action="{{ route('car.destroy', $car->id) }}" method="post">
+                      {{ csrf_field() }}
+                      {{ method_field('DELETE') }}
+                      <a class="btn btn-sm btn-info" href="{{ route('car.edit', $car->id) }}">Edit</a>
+                      <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('Yakin ingin menghapus data?')">Delete</button>
+                    </form>
+                  </td>
+                </tr>
+              @endforeach
+            @endif
           </tbody>
         </table>
       </div>

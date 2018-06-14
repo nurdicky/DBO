@@ -13,6 +13,7 @@ class Car extends Model
         'car_machine_number',
         'car_rute',
         'car_image',
+        'owner_id'
     ];
 
     public function owners()

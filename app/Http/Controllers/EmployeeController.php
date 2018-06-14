@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Employee;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
@@ -13,7 +14,8 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        return view('employees.list');
+        $employees = Employee::all();
+        return view('employees.list', ['employees' => $employees]);
     }
 
     /**
@@ -23,7 +25,7 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        //
+        return view('employees.create');
     }
 
     /**
@@ -34,7 +36,8 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $employees = Employee::create($request->all());
+        return redirect()->route('owner.index')->with('alert-success','Berhasil Menambahkan Data!');
     }
 
     /**
@@ -56,7 +59,8 @@ class EmployeeController extends Controller
      */
     public function edit($id)
     {
-        //
+        $employees = Employee::find($id);
+        return view('employees.edit', ['employees' => $employees]);
     }
 
     /**
@@ -68,7 +72,12 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $employees = Employee::find($id);
+        $employees->employee_name = $request->employee_name; 
+        $employees->employee_username = $request->employee_username;
+        $employees->employee_password = $request->employee_password;
+        $employees->save();
+        return redirect()->route('owner.index')->with('alert-success','Berhasil Memperbarui Data!');
     }
 
     /**
@@ -79,6 +88,7 @@ class EmployeeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Employee::destroy($id);
+        return redirect()->route('owner.index')->with('alert-success','Berhasil Menghapus Data!');
     }
 }

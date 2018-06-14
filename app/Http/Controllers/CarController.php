@@ -11,8 +11,8 @@ use Illuminate\Support\Facades\Response;
 
 
 class CarController extends Controller
-{
-    /**
+{   
+        /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -42,19 +42,11 @@ class CarController extends Controller
      */
     public function store(Request $request)
     {
-        if( $request->hasFile('car_image'))
-        { 
-            $img = $request->file('car_image'); 
-            $extension = $img->getClientMimeType(); 
-            dd($extension); 
-        } else {
-            dd('No image was found');
-        }
+        $host = request()->getHttpHost();
         $input = $request->file('car_image');
         $input = $request->all();
 
-        dd($request->car_image->getClientOriginalExtension());
-        $input['car_image'] = time().'.'.$request->car_image->getClientOriginalExtension();
+        $input['car_image'] = 'http://'.$host.'/images/'.$request->car_image->getClientOriginalName();
         $request->car_image->move(public_path('images'), $input['car_image']);
 
         $cars = Car::create($input);
@@ -94,18 +86,31 @@ class CarController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $host = request()->getHttpHost();
         $cars = Car::find($id);
-        $cars->car_type = $request->car_type;
-        $cars->car_plat_number = $request->car_plat_number;
-        $cars->car_frame_number = $request->car_frame_number;
-        $cars->car_rute = $request->car_rute;        
-        $cars->car_image = $request->car_image;
+        if ($request->hasFile('car_image')) {
+            $input = $request->file('car_image');
+            $input = $request->all();
+            $input['car_image'] = 'http://'.$host.'/images/'.$request->car_image->getClientOriginalName();
+            $request->car_image->move(public_path('images'), $input['car_image']);
+        }
+        else{
+            $input = $request->all();
+            $input['car_image'] = $cars->car_image;
+        }
+
+        $cars->car_type = $input['car_type'];
+        $cars->car_plat_number = $input['car_plat_number'];
+        $cars->car_frame_number = $input['car_frame_number'];
+        $cars->car_rute = $input['car_rute'];        
+        $cars->car_image = $input['car_image'];
+        $cars->owner_id = $input['owner_id'];
         $cars->save();
 
         return redirect()->route('car.index')->with('alert-success','Berhasil Memperbarui Data!');
     }
 
-    /**
+    /** 
      * Remove the specified resource from storage.
      *
      * @param  int  $id
