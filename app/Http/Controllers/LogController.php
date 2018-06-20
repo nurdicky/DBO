@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Employee;
+use App\Log;
+use App\Car;
+use App\Driver;
+use App\Owner;
 use Illuminate\Http\Request;
 
-class EmployeeController extends Controller
+class LogController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +17,8 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employees = Employee::all();
-        return view('employees.list', ['employees' => $employees]);
+        $logs = Log::all();
+        return view('logs.list', ['logs' => $logs]);
     }
 
     /**
@@ -26,7 +28,7 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        return view('employees.create');
+        return view('logs.create');
     }
 
     /**
@@ -37,18 +39,14 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        $employees = Employee::create([
-            'employee_name' => $request->employee_name,
-            'employee_username' => $request->employee_username,
-            'employee_password' => bcrypt($request->employee_password),
+        $logs = Log::create([
+            'car_id' => $request->car_id,
+            'owner_id' => $request->owner_id,
+            'driver_id' => $request->driver_id,
+            'status' => $request->status,
         ]);
-
-        User::create([
-            'name' => $request->employee_username,
-            'email' => null,
-            'password' => bcrypt($request->employee_password),
-        ]);
-        return redirect()->route('employee.index')->with('alert-success','Berhasil Menambahkan Data!');
+        
+        return redirect()->route('log.index')->with('alert-success','Berhasil Menambahkan Data!');
     }
 
     /**
@@ -70,8 +68,8 @@ class EmployeeController extends Controller
      */
     public function edit($id)
     {
-        $employees = Employee::find($id);
-        return view('employees.edit', ['employees' => $employees]);
+        $logs = Log::find($id);
+        return view('logs.edit', ['logs' => $logs]);
     }
 
     /**
@@ -83,12 +81,13 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $employees = Employee::find($id);
-        $employees->employee_name = $request->employee_name; 
-        $employees->employee_username = $request->employee_username;
-        $employees->employee_password = $request->employee_password;
-        $employees->save();
-        return redirect()->route('employee.index')->with('alert-success','Berhasil Memperbarui Data!');
+        $logs = Log::find($id);
+        $logs->car_id = $request->car_id; 
+        $logs->owner_id = $request->owner_id;
+        $logs->driver_id = $request->driver_id;
+        $logs->status = $request->status;
+        $logs->save();
+        return redirect()->route('log.index')->with('alert-success','Berhasil Memperbarui Data!');
     }
 
     /**
@@ -99,7 +98,7 @@ class EmployeeController extends Controller
      */
     public function destroy($id)
     {
-        Employee::destroy($id);
-        return redirect()->route('employee.index')->with('alert-success','Berhasil Menghapus Data!');
+        Log::destroy($id);
+        return redirect()->route('log.index')->with('alert-success','Berhasil Menghapus Data!');
     }
 }

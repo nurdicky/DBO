@@ -39,7 +39,12 @@ if ($prefix != null) {
         <i class="mdi mdi-account menu-icon"></i>
       </a>
     </li>
-
+    <li class="nav-item <?php ($url == 'log') ? 'active' : '';?>">
+      <a class="nav-link" href="{{ route('log.index')}}">
+        <span class="menu-title">Data Log Aktivitas</span>
+        <i class="mdi mdi-cached menu-icon"></i>
+      </a>
+    </li>
 
   </ul>
 </nav>

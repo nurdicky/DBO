@@ -19,7 +19,11 @@ class CreateDriversTable extends Migration
             $table->integer('driver_identity_number');
             $table->text('driver_address');
             $table->string('driver_rute');
+            $table->integer('car_id')->unsigned();
             $table->timestamps();
+
+            $table->foreign('car_id')->references('id')->on('cars');
+
         });
     }
 

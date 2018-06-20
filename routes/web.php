@@ -17,5 +17,6 @@ Route::group(['prefix' => 'master'], function () {
     Route::resource('owner', 'OwnerController');
     Route::resource('driver', 'DriverController');
     Route::resource('car', 'CarController');
+    Route::resource('log', 'LogController');
 
 });

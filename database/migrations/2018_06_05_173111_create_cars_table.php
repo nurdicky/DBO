@@ -22,12 +22,12 @@ class CreateCarsTable extends Migration
             $table->string('car_rute');
             $table->text('car_image');
             $table->integer('owner_id')->unsigned();
-            $table->integer('driver_id')->unsigned()->nullable();
+            $table->string('car_barcode')->nullable();
+            $table->integer('status')->default(0);
             $table->timestamps();
 
             $table->foreign('owner_id')->references('id')->on('owners');
-            $table->foreign('driver_id')->references('id')->on('drivers');
-
+                        
         });
     }
 

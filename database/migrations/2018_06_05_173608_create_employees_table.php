@@ -18,6 +18,7 @@ class CreateEmployeesTable extends Migration
             $table->string('employee_name');
             $table->string('employee_username');
             $table->string('employee_password');
+            $table->string('api_token')->nullable();
             $table->timestamps();
         });
     }
