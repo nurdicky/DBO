@@ -7,15 +7,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>@yield('title')</title>
   <!-- plugins:css -->
-  <link rel="stylesheet" href="{{ asset('assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.base.css') }}">
+  <link rel="stylesheet" href="{{ asset('public/assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('public/assets/vendors/css/vendor.bundle.base.css') }}">
   <!-- endinject -->
   <!-- inject:css -->
-  <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+  <link rel="stylesheet" href="{{ asset('public/assets/css/style.css') }}">
   <!-- endinject -->
-  <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
+  <link rel="shortcut icon" href="{{ asset('public/assets/images/web_hi_res_512.png') }}" />
 
   @yield('custom_css')
+  
+  <style>
+    
+    .navbar.default-layout-navbar .navbar-brand-wrapper .navbar-brand {
+      font-weight: 600;
+      font-size: 150%;
+      font-variant: all-small-caps;
+    }
+    .navbar.default-layout-navbar .navbar-brand-wrapper .navbar-brand img{
+      height:47px;
+      width:auto; 
+    }
+
+  </style>
+
 </head>
 <body>
   <div class="container-scroller">
@@ -43,17 +58,17 @@
   <!-- container-scroller -->
 
   <!-- plugins:js -->
-  <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>
-  <script src="{{ asset('assets/vendors/js/vendor.bundle.addons.js') }}"></script>
+  <script src="{{ asset('public/assets/vendors/js/vendor.bundle.base.js') }}"></script>
+  <script src="{{ asset('public/assets/vendors/js/vendor.bundle.addons.js') }}"></script>
   <!-- endinject -->
   <!-- Plugin js for this page-->
   <!-- End plugin js for this page-->
   <!-- inject:js -->
-  <script src="{{ asset('assets/js/off-canvas.js') }}"></script>
-  <script src="{{ asset('assets/js/misc.js') }}"></script>
+  <script src="{{ asset('public/assets/js/off-canvas.js') }}"></script>
+  <script src="{{ asset('public/assets/js/misc.js') }}"></script>
   <!-- endinject -->
   <!-- Custom js for this page-->
-  <script src="{{ asset('assets/js/dashboard.js') }}"></script>
+  <script src="{{ asset('public/assets/js/dashboard.js') }}"></script>
   <!-- End custom js for this page-->
 
   {{-- custom JS --}}

@@ -10,11 +10,16 @@ class Owner extends Model
         'owner_name',
         'owner_address',
         'owner_identity_number',
-        'owner_avatar',
+        // 'owner_avatar',
     ];
 
     public function cars()
     {
         return $this->hasMany('App\Car', 'owner_id');
+    }
+
+    public function logs()
+    {
+        return $this->hasMany('App\Log', 'owner_id');
     }
 }

@@ -15,6 +15,14 @@ class ShowController extends Controller
 {
     public function __invoke(Request $request, $spreadsheet_id)
     {
+        // Facade
+        //        $token = $request->user()->access_token;
+        //
+        //        Google::setAccessToken($token);
+        //
+        //        $sheets = Sheets::setService(Google::make('sheets'))
+        //                        ->spreadsheet($spreadsheet_id)
+        //                        ->sheetList();
 
         // GoogleSheets Trait
         $sheets = $request->user()

@@ -12,12 +12,24 @@ class Car extends Model
         'car_frame_number',
         'car_machine_number',
         'car_rute',
-        'car_image',
+        // 'car_image',
+        'owner_id',
+        // 'car_barcode'
     ];
 
     public function owners()
     {
         return $this->belongsTo('App\Owner', 'owner_id');
+    }
+
+    public function drivers()
+    {
+        return $this->hasMany('App\Driver', 'car_id');
+    }
+
+    public function logs()
+    {
+        return $this->hasMany('App\Log', 'car_id');
     }
 
 }
