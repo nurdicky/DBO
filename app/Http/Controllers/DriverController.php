@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Driver;
+use App\Car;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DriverController extends Controller
 {
@@ -14,7 +16,7 @@ class DriverController extends Controller
      */
     public function index()
     {
-        $drivers = Driver::all();
+        $drivers = Driver::orderBy('ID', 'DESC')->get();
         return view('drivers.list', ['drivers' => $drivers]);
     }
 
@@ -25,7 +27,8 @@ class DriverController extends Controller
      */
     public function create()
     {
-        return view('drivers.create');
+        $cars = Car::all();
+        return view('drivers.create', ['cars' => $cars ]);
     }
 
     /**
@@ -60,7 +63,8 @@ class DriverController extends Controller
     public function edit($id)
     {
         $drivers = Driver::find($id);
-        return view('drivers.edit', ['drivers' => $drivers]);
+        $cars = Car::all();
+        return view('drivers.edit', ['drivers' => $drivers, 'cars' => $cars ]);
     }
 
     /**
@@ -77,6 +81,7 @@ class DriverController extends Controller
         $drivers->driver_identity_number = $request->driver_identity_number;
         $drivers->driver_address = $request->driver_address;
         $drivers->driver_rute = $request->driver_rute;
+        $drivers->car_id = $request->car_id;
         $drivers->save();
 
         return redirect()->route('driver.index')->with('alert-success','Berhasil Memperbarui Data!');
@@ -92,5 +97,17 @@ class DriverController extends Controller
     {
         Driver::destroy($id);
         return redirect()->route('driver.index')->with('alert-success','Berhasil Menghapus Data!');
+    }
+
+    public function export()
+    {
+        $data = Driver::with('cars')->orderBy('ID', 'DESC')->get();
+
+        if (count($data) == 0) {
+            return redirect()->route('rekap.index')->with('alert-danger','Sorry, Anda tidak dapat melakukan Export data dikarenakan data masih kosong !');
+        }  
+        else{
+            return Excel::download(new \App\Exports\DriverExport($data), 'Data Pengemudi.xlsx');      
+        }
     }
 }

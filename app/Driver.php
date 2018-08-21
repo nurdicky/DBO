@@ -11,5 +11,17 @@ class Driver extends Model
         'driver_identity_number',
         'driver_address',
         'driver_rute',
+        'car_id'
     ];
+
+    public function cars()
+    {
+        return $this->belongsTo('App\Car', 'car_id');
+    }
+
+    public function logs()
+    {
+        return $this->hasMany('App\Log', 'driver_id');
+    }
+    
 }

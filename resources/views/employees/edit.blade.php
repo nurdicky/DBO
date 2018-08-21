@@ -3,7 +3,7 @@
 @section('title', 'Edit Data Mobil')
 
 @section('custom_css')
-  <link rel="stylesheet" href="{{ asset('assets/css/custom.css')}}">
+  <link rel="stylesheet" href="{{ asset('public/assets/css/custom.css')}}">
 @endsection
 
 @section('content')
@@ -11,9 +11,9 @@
 <div class="page-header">
 	<h3 class="page-title">
 		<span class="page-title-icon bg-gradient-primary text-white mr-2">
-			<i class="mdi mdi-car"></i>
+			<i class="mdi mdi-account"></i>
 		</span>
-		Edit Data Mobil
+		Edit Data Petugas
 	</h3>
     
 </div>
@@ -23,46 +23,26 @@
 		<div class="card">
 			<div class="card-body">
 				
-				<form class="forms-sample"  action="{{ route('car.update', $cars->id) }}" method="POST"  enctype="multipart/form-data">
-					{{ method_field('PUT') }}
+				<form class="forms-sample" method="POST" action="{{route('employee.update', $employees->id)}}">
 					{{ csrf_field() }}
+					{{ method_field('PUT') }}
 					<div class="form-group">
-						<label for="car_type">Jenis Mobil</label>
-						<input type="text" class="form-control" name="car_type" id="car_type" value="{{$cars->car_type}}" placeholder="Jenis Mobil">
+						<label for="employee_name">Nama Petugas</label>
+						<input type="text" value="{{$employees->employee_name}}" class="form-control" name="employee_name" id="employee_name" placeholder="Nama Petugas">
 					</div>
 					<div class="form-group">
-						<label for="car_plat_number">Plat Nomor Mobil</label>
-						<input type="text" class="form-control" name="car_plat_number" id="car_plat_number" value="{{$cars->car_plat_number}}" placeholder="Plat Nomor Mobil">
+						<label for="employee_username">Username</label>
+						<input type="text" value="{{$employees->employee_username}}" class="form-control" name="employee_username" id="employee_username" placeholder="Username">
 					</div>
 					<div class="form-group">
-						<label for="car_frame_number">Nomor Rangka Mobil</label>
-						<input type="text" class="form-control" name="car_frame_number" id="car_frame_number" value="{{$cars->car_frame_number}}" placeholder="Nomor Rangka Mobil">
-					</div>
-					<div class="form-group">
-						<label for="car_machine_number">Nomor Mesin Mobil</label>
-						<input type="text" class="form-control" name="car_machine_number" id="car_machine_number" value="{{$cars->car_machine_number}}" placeholder="Nomor Mesin Mobil">
-					</div>
-					<div class="form-group">
-						<label for="car_rute">Rute</label>
-						<input type="text" class="form-control" name="car_rute" id="car_rute" value="{{$cars->car_rute}}" placeholder="Rute">
-					</div>
-					<div class="form-group">
-						<label for="owner_id">Pemilik Mobil</label>
-						<select class="form-control" name="owner_id" id="owner_id">
-							<option value=""> -- Pilih Pemilik Mobil --</option>
-							@foreach($owners as $owner)
-								<option value="{{ $owner->id }}" <?= ($cars->owner_id == $owner->id) ? 'selected' : '';?> >{{ $owner->owner_name }}</option>
-							@endforeach
-						</select>
-					</div>
-					<div class="form-group">
-						<label>Foto Mobil</label>
-						<input type="file" name="car_image" class="form-control">
+						<label for="employee_password">Password</label>
+						<input type="password" value="{{$employees->employee_password}}" class="form-control" name="employee_password" id="employee_password" placeholder="Password">
 					</div>
 
 					<button type="submit" class="btn btn-gradient-primary mr-2">Submit</button>
 					<a href="{{ url()->previous() }}" class="btn btn-light">Cancel</a>
 				</form>
+				
 			</div>
 		</div>
 	</div>

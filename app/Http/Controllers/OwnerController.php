@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Owner;
+use App\Car;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OwnerController extends Controller
 {
@@ -14,7 +16,7 @@ class OwnerController extends Controller
      */
     public function index()
     {
-        $owners = Owner::all();
+        $owners = Owner::orderBy('ID', 'DESC')->get();
         return view('owners.list', ['owners' => $owners]);
     }
 
@@ -37,11 +39,18 @@ class OwnerController extends Controller
     public function store(Request $request)
     {
         $host = request()->getHttpHost();
-        $input = $request->file('owner_avatar');
+        $this->validate($request, [
+            'owner_name' => 'required',
+            'owner_identity_number' => 'required',
+            'owner_address' => 'required',
+            // 'owner_avatar' => 'required',
+        ]);
+
+        // $input = $request->file('owner_avatar');
         $input = $request->all();
 
-        $input['owner_avatar'] = 'http://'.$host.'/images/'.$request->owner_avatar->getClientOriginalName();
-        $request->owner_avatar->move(public_path('images'), $input['owner_avatar']);
+        // $input['owner_avatar'] = 'http://'.$host.'/public/images/'.$request->owner_avatar->getClientOriginalName();
+        // $request->owner_avatar->move(public_path('images'), $input['owner_avatar']);
 
         $owners = Owner::create($input);
         return redirect()->route('owner.index')->with('alert-success','Berhasil Menambahkan Data!');
@@ -55,7 +64,10 @@ class OwnerController extends Controller
      */
     public function show($id)
     {
-        //
+        $owners = Car::where('owner_id', $id)
+                    ->with('owners', 'drivers')
+                    ->first();
+        return response()->json($owners, 200);        
     }
 
     /**
@@ -81,21 +93,21 @@ class OwnerController extends Controller
     {
         $host = request()->getHttpHost();
         $owners = Owner::find($id);
-        if ($request->hasFile('owner_avatar')) {
-            $input = $request->file('owner_avatar');
+        // if ($request->hasFile('owner_avatar')) {
+        //     $input = $request->file('owner_avatar');
+        //     $input = $request->all();
+        //     $input['owner_avatar'] = 'http://'.$host.'/public/images/'.$request->owner_avatar->getClientOriginalName();
+        //     $request->owner_avatar->move(public_path('images'), $input['owner_avatar']);
+        // }
+        // else{
             $input = $request->all();
-            $input['owner_avatar'] = 'http://'.$host.'/images/'.$request->owner_avatar->getClientOriginalName();
-            $request->owner_avatar->move(public_path('images'), $input['owner_avatar']);
-        }
-        else{
-            $input = $request->all();
-            $input['owner_avatar'] = $owners->owner_avatar;
-        }
+            // $input['owner_avatar'] = $owners->owner_avatar;
+        // }
         
         $owners->owner_name = $input['owner_name'];
         $owners->owner_address = $input['owner_address'];
         $owners->owner_identity_number = $input['owner_identity_number'];
-        $owners->owner_avatar = $input['owner_avatar'];
+        // $owners->owner_avatar = $input['owner_avatar'];
         $owners->save();
 
         return redirect()->route('owner.index')->with('alert-success','Berhasil Memperbarui Data!');
@@ -111,5 +123,17 @@ class OwnerController extends Controller
     {
         Owner::destroy($id);
         return redirect()->route('owner.index')->with('alert-success','Berhasil Menghapus Data!');
+    }
+
+    public function export()
+    {
+        $data = Owner::orderBy('ID', 'DESC')->get();
+
+        if (count($data) == 0) {
+            return redirect()->route('rekap.index')->with('alert-danger','Sorry, Anda tidak dapat melakukan Export data dikarenakan data masih kosong !');
+        }  
+        else{
+            return Excel::download(new \App\Exports\OwnerExport($data), 'Data Pemilik.xlsx');      
+        }
     }
 }

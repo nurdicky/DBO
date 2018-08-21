@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use App\Employee;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class EmployeeController extends Controller
 {
@@ -14,7 +16,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employees = Employee::all();
+        $employees = Employee::orderBy('ID', 'DESC')->get();
         return view('employees.list', ['employees' => $employees]);
     }
 
@@ -36,8 +38,18 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        $employees = Employee::create($request->all());
-        return redirect()->route('owner.index')->with('alert-success','Berhasil Menambahkan Data!');
+        $employees = Employee::create([
+            'employee_name' => $request->employee_name,
+            'employee_username' => $request->employee_username,
+            'employee_password' => bcrypt($request->employee_password),
+        ]);
+
+        User::create([
+            'name' => $request->employee_username,
+            'email' => null,
+            'password' => bcrypt($request->employee_password),
+        ]);
+        return redirect()->route('employee.index')->with('alert-success','Berhasil Menambahkan Data!');
     }
 
     /**
@@ -77,7 +89,7 @@ class EmployeeController extends Controller
         $employees->employee_username = $request->employee_username;
         $employees->employee_password = $request->employee_password;
         $employees->save();
-        return redirect()->route('owner.index')->with('alert-success','Berhasil Memperbarui Data!');
+        return redirect()->route('employee.index')->with('alert-success','Berhasil Memperbarui Data!');
     }
 
     /**
@@ -89,6 +101,18 @@ class EmployeeController extends Controller
     public function destroy($id)
     {
         Employee::destroy($id);
-        return redirect()->route('owner.index')->with('alert-success','Berhasil Menghapus Data!');
+        return redirect()->route('employee.index')->with('alert-success','Berhasil Menghapus Data!');
+    }
+
+    public function export()
+    {
+        $data = Employee::orderBy('ID', 'DESC')->get();
+
+        if (count($data) == 0) {
+            return redirect()->route('rekap.index')->with('alert-danger','Sorry, Anda tidak dapat melakukan Export data dikarenakan data masih kosong !');
+        }  
+        else{
+            return Excel::download(new \App\Exports\EmployeeExport($data), 'Data Employee.xlsx');      
+        }
     }
 }

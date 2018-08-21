@@ -47,6 +47,8 @@ class LoginController extends Controller
      */
     public function redirectToProvider($provider)
     {
+        dd($provider);
+
         return Socialite::driver($provider)
                           ->scopes(config('google.scopes'))
                           ->with([
@@ -63,10 +65,13 @@ class LoginController extends Controller
      */
     public function handleProviderCallback($provider)
     {
-        $user = Socialite::driver($provider)->user();
-        $authUser = $this->findOrCreateUser($user, $provider);
-        Auth::login($authUser, true);
-        return redirect()->route('home');
+        // $user = Socialite::driver($provider)->user();
+
+        //$authUser = $this->findOrCreateUser($user, $provider);
+        //Auth::login($authUser, true);
+        
+        
+        return redirect()->route('sheets.index');
     }
 
     public function findOrCreateUser($user, $provider)

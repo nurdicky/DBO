@@ -3,7 +3,7 @@
 @section('title', 'Edit Data Pemilik')
 
 @section('custom_css')
-  <link rel="stylesheet" href="{{ asset('assets/css/custom.css')}}">
+  <link rel="stylesheet" href="{{ asset('public/assets/css/custom.css')}}">
 @endsection
 
 @section('content')
@@ -39,10 +39,10 @@
 						<input type="text" class="form-control" name="owner_identity_number" id="owner_identity_number" value="{{$owners->owner_identity_number}}">
 					</div>
 					
-					<div class="form-group">
+					<!-- <div class="form-group">
 						<label>Foto </label>
 						<input type="file" name="owner_avatar" class="form-control">
-					</div>
+					</div> -->
 
 					<button type="submit" class="btn btn-gradient-primary mr-2">Submit</button>
 					<a href="{{ url()->previous() }}" class="btn btn-light">Cancel</a>

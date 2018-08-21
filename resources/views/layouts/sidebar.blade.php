@@ -39,7 +39,40 @@ if ($prefix != null) {
         <i class="mdi mdi-account menu-icon"></i>
       </a>
     </li>
+    <li class="nav-item <?php ($url == 'log') ? 'active' : '';?>">
+      <a class="nav-link" href="{{ route('log.index')}}">
+        <span class="menu-title">Data Log Aktivitas</span>
+        <i class="mdi mdi-cached menu-icon"></i>
+      </a>
+    </li>
+    <li class="nav-item <?php ($url == 'masuk') ? 'active' : '';?>">
+      <a class="nav-link" href="{{ route('log.masuk')}}">
+        <span class="menu-title">Data Log Masuk</span>
+        <i class="mdi mdi-clock-in menu-icon"></i>
+      </a>
+    </li>
+    <li class="nav-item <?php ($url == 'keluar') ? 'active' : '';?>">
+      <a class="nav-link" href="{{ route('log.keluar')}}">
+        <span class="menu-title">Data Log Keluar</span>
+        <i class="mdi mdi-clock-out menu-icon"></i>
+      </a>
+    </li>
+    <li class="nav-item <?php ($url == 'rekap') ? 'active' : '';?>">
+      <a class="nav-link" href="{{ route('rekap.index')}}">
+        <span class="menu-title">Rekap</span>
+        <i class="mdi mdi-table menu-icon"></i>
+      </a>
+    </li>
 
+    <li class="nav-item sidebar-actions">
+      <span class="nav-link" style="padding-top:0px">
+        <a href="{{ route('print.barcode') }}" class="btn btn-block btn-lg btn-gradient-primary mt-4"> Print Barcode </a>
+        <a href="{{ asset('public/download/app-debug.apk') }}" class="btn btn-block btn-lg btn-gradient-danger mt-4"> Download APK </a>
+        <div class="text-center" style="padding-top:10px">
+            <img width="100px" src="{{ asset('public/images/logo.png') }}" alt="logo"/>
+        </div>
+      </span>
+    </li>
 
   </ul>
 </nav>

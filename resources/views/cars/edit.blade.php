@@ -3,7 +3,7 @@
 @section('title', 'Edit Data Mobil')
 
 @section('custom_css')
-  <link rel="stylesheet" href="{{ asset('assets/css/custom.css')}}">
+  <link rel="stylesheet" href="{{ asset('public/assets/css/custom.css')}}">
 @endsection
 
 @section('content')
@@ -48,17 +48,32 @@
 					</div>
 					<div class="form-group">
 						<label for="owner_id">Pemilik Mobil</label>
-						<select class="form-control" name="owner_id" id="owner_id">
+						<select class="form-control" name="owner_id" id="owner_id" required>
 							<option value=""> -- Pilih Pemilik Mobil --</option>
 							@foreach($owners as $owner)
 								<option value="{{ $owner->id }}" <?= ($cars->owner_id == $owner->id) ? 'selected' : '';?> >{{ $owner->owner_name }}</option>
 							@endforeach
 						</select>
 					</div>
-					<div class="form-group">
+					{{-- <div class="form-group">
 						<label>Foto Mobil</label>
 						<input type="file" name="car_image" class="form-control">
-					</div>
+					</div> --}}
+					{{-- <div class="form-group">
+						<label>Barcode</label>
+						<div class="row" style="margin-bottom:20px">
+							<button style="margin-left: 20px;" id="btn-generate" type="submit" class="btn btn-sm btn-default">Generate</a>
+						</div> --}}
+
+						<?php //$code = App\Http\Controllers\CarController::barcode(@$cars->car_barcode)  ?>
+
+						{{-- <div class="col-md-12" id="img-barcode">
+							@if (@$cars->exists)
+								<img src="data:image/png;base64,{{$code}}" />
+							@endif
+							<input value="{{ @$cars->car_barcode }}" id="car_barcode" type="hidden" class="form-control" name="car_barcode" required>
+						</div>
+					</div> --}}
 
 					<button type="submit" class="btn btn-gradient-primary mr-2">Submit</button>
 					<a href="{{ url()->previous() }}" class="btn btn-light">Cancel</a>
@@ -71,5 +86,24 @@
 @endsection
 
 @section('custom_js')
+
+<script type="text/javascript">
+	$( "#btn-generate" ).click(function(e) {
+		e.preventDefault();
+	
+		$.ajax({
+			dataType : 'json',
+			type : 'GET',
+			url : '{{ route("barcode") }}',
+			success : function(data) {
+				$('#img-barcode img').remove();
+				var html = '<img src="data:image/png;base64,'+data.code+'" />';
+				$('#car_barcode').val(data.number);
+				$('#img-barcode').prepend(html);
+			}
+		});
+  
+	});
+</script>
 
 @endsection

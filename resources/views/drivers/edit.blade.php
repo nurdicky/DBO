@@ -3,8 +3,9 @@
 @section('title', 'Edit Data Pengemudi')
 
 @section('custom_css')
-  <link rel="stylesheet" href="{{ asset('assets/css/custom.css')}}">
+  <link rel="stylesheet" href="{{ asset('public/assets/css/custom.css')}}">
 @endsection
+
 
 @section('content')
 
@@ -41,6 +42,15 @@
 					<div class="form-group">
 						<label for="driver_rute">Rute</label>
 						<textarea class="form-control" rows="4" name="driver_rute" id="driver_rute">{{$drivers->driver_rute}}</textarea>
+					</div>
+					<div class="form-group">
+						<label for="car_id">Mobil</label>
+						<select class="form-control" name="car_id" id="car_id">
+							<option value=""> -- Pilih Mobil --</option>
+							@foreach($cars as $car)
+								<option <?= ($drivers->car_id == $car->id) ? 'selected' : '' ; ?> value="{{ $car->id }}">{{ $car->id }} ( {{$car->car_plat_number}} )</option>
+							@endforeach
+						</select>
 					</div>
 
 					<button type="submit" class="btn btn-gradient-primary mr-2">Submit</button>

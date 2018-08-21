@@ -3,7 +3,7 @@
 @section('title', 'Tambah Data Pengemudi')
 
 @section('custom_css')
-  <link rel="stylesheet" href="{{ asset('assets/css/custom.css')}}">
+  <link rel="stylesheet" href="{{ asset('public/assets/css/custom.css')}}">
 @endsection
 
 @section('content')
@@ -27,19 +27,28 @@
 					{{ csrf_field() }}
 					<div class="form-group">
 						<label for="driver_name">Nama Pengemudi</label>
-						<input type="text" class="form-control" name="driver_name" id="driver_name" placeholder="Nama Pengemudi">
+						<input required type="text" class="form-control" name="driver_name" id="driver_name" placeholder="Nama Pengemudi">
 					</div>
 					<div class="form-group">
 						<label for="driver_identity_number">Nomor KTP</label>
-						<input type="text" class="form-control" name="driver_identity_number" id="driver_identity_number" placeholder="Nomor KTP">
+						<input required type="text" class="form-control" name="driver_identity_number" id="driver_identity_number" placeholder="Nomor KTP">
 					</div>
 					<div class="form-group">
 						<label for="driver_address">Alamat Pengemudi</label>
-						<textarea class="form-control" rows="4" name="driver_address" id="driver_address" placeholder="Alamat Pengemudi"></textarea>
+						<textarea required class="form-control" rows="4" name="driver_address" id="driver_address" placeholder="Alamat Pengemudi"></textarea>
 					</div>
 					<div class="form-group">
 						<label for="driver_rute">Rute</label>
-						<input type="text" class="form-control" name="driver_rute" id="driver_rute" placeholder="Rute">
+						<input required type="text" class="form-control" name="driver_rute" id="driver_rute" placeholder="Rute">
+					</div>
+					<div class="form-group">
+						<label for="car_id">Mobil</label>
+						<select class="form-control" name="car_id" id="car_id" required>
+							<option value=""> -- Pilih Mobil --</option>
+							@foreach($cars as $car)
+								<option value="{{ $car->id }}">{{ $car->id }} ( {{$car->car_plat_number}} )</option>
+							@endforeach
+						</select>
 					</div>
 
 					<button type="submit" class="btn btn-gradient-primary mr-2">Submit</button>
